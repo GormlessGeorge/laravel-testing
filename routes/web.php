@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::post('/posts', [PostController::class, 'store']);
+Route::patch('/posts/{post}', [PostController::class, 'update']);
