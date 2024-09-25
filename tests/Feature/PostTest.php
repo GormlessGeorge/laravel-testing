@@ -107,4 +107,40 @@ class PostTest extends TestCase
 
         $this->assertEquals($post->id, $updatedPost->id);
     }
+
+    /** @test */
+
+    public function response_for_route_posts_index_is_view_post_index_with_posts()
+    {
+        $this->withoutExceptionHandling();
+
+        $posts = Post::factory(10)->create();
+
+        $res = $this->get('/posts');
+
+        $res->assertViewIs('posts.index');
+
+        $res->assertSeeText('View page');
+
+        $titles = $posts->pluck('title')->toArray();
+        $res->assertSeeText($titles);
+    }
+
+    /** @test */
+    public function response_for_route_posts_show_is_view_post_show_with_single_post()
+    {
+        $this->withoutExceptionHandling();
+
+        $post = Post::factory()->create();
+
+        $res = $this->get('/posts/'. $post->id);
+
+        $res->assertViewIs('posts.show');
+        $res->assertSeeText('Show page');
+        $res->assertSeeText($post->title);
+        $res->assertSeeText($post->description);
+
+
+
+    }
 }
